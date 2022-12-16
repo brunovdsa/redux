@@ -1,15 +1,25 @@
-import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import './App.css';
-import { connect } from 'react-redux/es/exports';
+import { useDispatch, useSelector } from 'react-redux/es/exports';
+import { increment, incrementAmount } from './features/counter/counter-slice';
+import { useAppSelector } from './hooks';
 
-function App({ count, increment, incrementAmount }) {
+// Passar como parametros count, increment, incrementAmount como params da function App caso utilizando forma antiga
+
+function App() {
+  const count = useAppSelector((state) => state.counter.value);
+  const dispach = useDispatch();
+
   function handleOnClick() {
-    increment();
+    //increment();
+    //dispach({ type: 'counter/increment' });
+    dispach(increment());
   }
 
   function handleOnClickAmount() {
-    incrementAmount(5);
+    //incrementAmount(5);
+    //dispach({ type: 'counter/incrementAmount', payload: 5 });
+    dispach(incrementAmount(5));
   }
   return (
     <div className='App'>
@@ -36,18 +46,21 @@ function App({ count, increment, incrementAmount }) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    count: state.counter.value,
-  };
-};
+export default App;
 
-const mapDispachToProps = (dispach) => {
-  return {
-    increment: () => dispach({ type: 'counter/increment' }),
-    incrementAmount: (amount) =>
-      dispach({ type: 'counter/incrementAmount', payload: amount }),
-  };
-};
+//OLD SCHOOL REDUX
+// const mapStateToProps = (state) => {
+//   return {
+//     count: state.counter.value,
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispachToProps)(App);
+// const mapDispachToProps = (dispach) => {
+//   return {
+//     increment: () => dispach({ type: 'counter/increment' }),
+//     incrementAmount: (amount) =>
+//       dispach({ type: 'counter/incrementAmount', payload: amount }),
+//   };
+// };
+
+// export default connect(mapStateToProps, mapDispachToProps)(App);
